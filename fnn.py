@@ -255,6 +255,11 @@ class Layer(object):
         # End of the code to modify
         ###################################
 
+		# Compute the average value of the gradients, since
+        # we are minimizing the average loss. 
+        self.d_b /= d_scores.shape[0]
+        self.d_w /= d_scores.shape[0]
+        
         return d_inputs
 
 
@@ -278,6 +283,15 @@ class GradientDescentOptimizer(object):
 
 
 # Utility functions.
+def sigmoid(x): 
+    return 1/(1+np.exp(-x))   
+
+def d_sigmoid(a=None, x=None):
+    if a is not None:
+        return a * (1 - a)
+    else:
+        return d_sigmoid(a=sigmoid(x))
+
 def relu(x):
     "The rectified linear activation function."
     return np.clip(x, 0.0, None)
@@ -335,4 +349,4 @@ def d_linear(a=None, x=None):
 
 
 # Mapping from activation functions to its derivatives.
-GRAD_DICT = {relu: d_relu, tanh: d_tanh, linear: d_linear}
+GRAD_DICT = {sigmoid: d_sigmoid, relu: d_relu, tanh: d_tanh, linear: d_linear}

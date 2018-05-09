@@ -59,7 +59,7 @@ def main():
 
     # Initialize model
     print 'Initializing neural network\n'
-    model = fnn.FNN(784, 10, [128, 32], [fnn.relu, fnn.relu])
+    model = fnn.FNN(784, 10, [128], [fnn.sigmoid])
 
     selected = np.random.randint(test_data.shape[0], size=100)
     true_labels = np.argmax(test_labels[selected], axis=1)
@@ -67,8 +67,8 @@ def main():
 
     print 'Start training\n'
     n_train = train_data.shape[0]
-    n_epochs = 50
-    batch_size = 100
+    n_epochs = 10
+    batch_size = 1
     opt = fnn.GradientDescentOptimizer(0.01)
     for i in xrange(n_epochs):
         sum_loss = 0.0
